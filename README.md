@@ -1,2 +1,8 @@
-# slate-editor-mini-rich-text
-A slate rich text editor with minimal features
+# slate-editor-mini-project
+A slate editor with minimal feature
+
+## Quick Start
+- clone repository: `git clone https://github.com/shamrat17/slate-editor-mini-rich-text.git`
+- install dependency using `yarn` or `npm install`
+- run project `npm start`
+- brows it on `localhost:3344`

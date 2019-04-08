@@ -1,0 +1,114 @@
+html, input, textarea {
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.4;
+    background: #eee !important;
+}
+
+body {
+    margin: 0;
+    background-color: #eee !important;
+}
+
+p {
+    margin: 0;
+}
+
+pre {
+    padding: 10px;
+    background-color: #eee;
+    white-space: pre-wrap;
+}
+
+:not(pre)>code {
+    font-family: monospace;
+    background-color: #eee;
+    padding: 3px;
+}
+
+img, .sImage {
+    display: block;
+    max-width: 100%;
+    max-height: 20em;
+}
+
+blockquote {
+    border-left: 2px solid #ddd;
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 10px;
+    color: #aaa;
+    font-style: italic;
+}
+
+blockquote[dir='rtl'] {
+    border-left: none;
+    padding-left: 0;
+    padding-right: 10px;
+    border-right: 2px solid #ddd;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+td {
+    padding: 10px;
+    border: 2px solid #ddd;
+}
+
+input {
+    box-sizing: border-box;
+    font-size: 0.85em;
+    width: 100%;
+    padding: 0.5em;
+    border: 2px solid #ddd;
+    background: #fafafa;
+}
+
+input:focus {
+    outline: 0;
+    border-color: blue;
+}
+
+[data-slate-editor]>*+* {
+    margin-top: 1em;
+}
+
+#app {
+    position: relative;
+    top: 100px;
+    width: 60%;
+    min-height: 400px;
+    margin-left: 20%;
+    background: #ffffff !important;
+}
+.sButton {
+    cursor: pointer;
+}
+.sIcon{
+    font-size: 18px;
+    vertical-align: text-bottom;
+}
+.sToolbar {
+    position: relative;
+    padding: 14px 14px 14px 34px;
+    margin: 0 -20px;
+    border-bottom: 2px solid #eee !important;
+    margin-bottom: 20px;
+}
+.upload-file-area {
+    width: 100%;
+    text-align: center;
+}
+.upload-picture {
+    width: 100%;
+}
+.invalid-alert {
+    color: rgb(201, 47, 54);
+}
+.file-thumbnail {
+    cursor: pointer;
+}
+.file-thumbnail-image {
+    width: 60px;
+}
