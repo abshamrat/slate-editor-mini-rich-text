@@ -15,5 +15,19 @@ module.exports = merge(common, {
   output: {
     filename: './assets/index.js'
   },
-  plugins: [htmlPlugin],
+  module: {
+    rules: [
+      {
+        test: /\.html$/,
+        use: [
+          {
+            loader: "html-loader"
+          }
+        ]
+      }
+    ]
+  },
+  plugins: [
+    htmlPlugin
+  ],
 });
