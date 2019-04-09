@@ -11,7 +11,9 @@ const config = {
       inline: true,
       port: 3344,
       historyApiFallback: true,
-      contentBase: './'
+      contentBase: './',
+      compress: true,
+      disableHostCheck: true,
     },
     module: {
       rules: [
