@@ -47,14 +47,14 @@ const config = {
         },
         {
           test: /\.json$/,
-          exclude: /(node_modules|bower_components)/,
+          exclude: /(node_modules)/,
           use: [{
             loader: 'json-loader'
           }]
         },
         {
           test: /(\.webp|\.png)$/,
-          exclude: /(node_modules|bower_components)/,
+          exclude: /(node_modules)/,
           use: [{
             loader: 'file-loader'
           }]
