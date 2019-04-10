@@ -34,6 +34,7 @@ const CONTENT_SAVE_KEY= 'slateData';
 const confirm = Modal.confirm;
 const isBackedTAb = isKeyHotkey('Shift+Tab')
 const isTAb = isKeyHotkey('Tab');
+const isDel = isKeyHotkey('Del');
 const isEnter = isKeyHotkey('Enter');
 const NODE_LIMIT = 10;
 
@@ -52,7 +53,6 @@ const plugins = [
   MarkHotkey({ key: 'b', type: 'bold' }),
   MarkHotkey({ key: '`', type: 'code' }),
   MarkHotkey({ key: 'i', type: 'italic' }),
-  MarkHotkey({ key: '~', type: 'strikethrough' }),
   MarkHotkey({ key: 'u', type: 'underline' }),
   DefaultActions(),
   topLevelNodesLimit
@@ -404,6 +404,11 @@ class Index extends React.Component {
       this.onClickShiftLeft(event);      
     } else if (isTAb(event)) {
       this.onClickShiftRight(event);
+    } else if (isDel(event)) {
+      const type = getCurrentBlockType(this.state);
+      if (type === 'file') {
+        editor.setBlocks(DEFAULT_NODE);
+      }
     } else if (isEnter(event)) {
       const type = getCurrentBlockType(this.state);
       if (type === 'file') {
