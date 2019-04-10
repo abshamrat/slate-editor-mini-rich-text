@@ -4,6 +4,13 @@ import ls from 'local-storage';
 import {Modal, Divider} from 'antd';
 import imageExtensions from 'image-extensions'; 
 
+function readAsDataURL(file, result) {
+    const reader = new FileReader();
+    reader.onloadend = () => {
+        result(reader.result)
+    }
+    reader.readAsDataURL(file)
+}
 
 class fileModal  extends React.Component {
     state = {
@@ -28,7 +35,7 @@ class fileModal  extends React.Component {
         if (isUrl(url.trim())) {
             return new URL(url).pathname.split('.').pop()
         }
-        return null;
+        return false;
     }
       
     getExtensionFromFile= (fileName) => {
@@ -37,7 +44,8 @@ class fileModal  extends React.Component {
 
     handleImageUpload = (event) => {
         event.preventDefault();
-        if (!this.isImage({fileName: event.target.files[0].name})) {
+        const file = event.target.files[0];
+        if (!this.isImage({fileName: file.name})) {
             this.setState(
                 {
                     fileDataURL: false,
@@ -45,20 +53,19 @@ class fileModal  extends React.Component {
                 }
             )
         } else {
-            let reader = new FileReader();
-            let file = event.target.files[0];
-            reader.onloadend = () => {
-              this.setState({
-                fileDataURL: reader.result,
-                fileName: file.name
-              });
-            }
-            reader.readAsDataURL(file)
+            readAsDataURL(file, (result) => {
+                this.setState({
+                    fileDataURL: result,
+                    fileName: file.name,
+                    invalidImg: false,
+    
+                  });
+            })
         }
     }
     handleImageUrl = (event) => {
         event.preventDefault();
-        if (this.isImage({url: event.target.value})) {
+        if (!this.isImage({url: event.target.value})) {
             this.setState(
                 {
                     fileDataURL: false,
@@ -67,15 +74,16 @@ class fileModal  extends React.Component {
             );
         } else {
             this.setState({
+                invalidUrl: false,
                 fileDataURL: event.target.value,
             });
         }
     }
     handleFileUpload = (event) => {
         event.preventDefault();
-        const fileExt = this.getExtensionFromFile(event.target.files[0].name);
+        const file = event.target.files[0];
+        const fileExt = this.getExtensionFromFile(file.name);
         if (fileExt.toLowerCase() !== 'pdf' && fileExt.toLowerCase() !== 'txt') {
-            console.log('going if')
             this.setState(
                 {
                     fileDataURL: false,
@@ -83,17 +91,14 @@ class fileModal  extends React.Component {
                 }
             )
         } else {
-            console.log('going else')
-            let reader = new FileReader();
-            let file = event.target.files[0];
-            reader.onloadend = () => {
-              this.setState({
-                fileDataURL: reader.result,
-                fileName: file.name,
-                fileExt: fileExt
-              });
-            }
-            reader.readAsDataURL(file)
+            readAsDataURL(file, (result) => {
+                this.setState({
+                    fileDataURL: result,
+                    fileName: file.name,
+                    fileExt: fileExt,
+                    invalidFile: false
+                });
+            })
         }
     }
 
@@ -112,7 +117,7 @@ class fileModal  extends React.Component {
                                 <div className="upload-by-url">
                                     <input type="text" onChange={this.handleImageUrl} placeholder="https:// upload by URL" />
                                     {
-                                        this.state.invalidUrl && <span>Not valid image type</span>
+                                        this.state.invalidUrl && <span className="invalid-alert">Invalid image url.</span>
                                     }
                                 </div>
                                 <Divider>OR</Divider>
