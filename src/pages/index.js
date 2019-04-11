@@ -1,4 +1,4 @@
-import { Value } from 'slate';
+import { Value, Point } from 'slate';
 import { Editor } from 'slate-react';
 import React from 'react';
 import { Modal, notification} from 'antd';
@@ -413,7 +413,16 @@ class Index extends React.Component {
       const type = getCurrentBlockType(this.state);
       if (type === 'file') {
         editor.insertBlock(DEFAULT_NODE);
-      } else {
+      } else if(type === 'ol_list' || type === 'ul_list') {
+        const {blocks} = this.state.value;
+        const listText = blocks.first().getText().trim();
+        if (listText) {
+          return next();
+        } else {
+          editor.shiftLeft(this.state.value);
+        }
+      }
+      else {
         return next()
       }
     } else {

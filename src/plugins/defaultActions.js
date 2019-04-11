@@ -96,17 +96,20 @@ module.exports = function defaultActions(options){
              */
             shiftLeft(editor, value) {
                 const { document, blocks } = value;
-                const prevBlock = document.getPreviousSibling(blocks.first().key);
-                if (!prevBlock) {
-                    const parent = document.getParent(blocks.first().key);
-                    if (parent && parent.type === Object.keys(LIST_TYPE)[1]) {
-                        editor
-                        .unwrapBlock(Object.keys(LIST_TYPE)[1])
-                    }
-                    else if (parent && parent.type === Object.keys(LIST_TYPE)[0]) {
-                        editor
-                        .unwrapBlock(Object.keys(LIST_TYPE)[0])
-                    }
+                const parent = document.getParent(blocks.first().key);
+                const thatParent = document.getParent(parent.key);
+                if (!thatParent.type) {
+                  editor
+                  .setBlocks(DEFAULT_NODE)
+                  .unwrapBlock(parent.type);
+                }
+                else if (parent && parent.type === Object.keys(LIST_TYPE)[1]) {
+                    editor
+                    .unwrapBlock(Object.keys(LIST_TYPE)[1])
+                }
+                else if (parent && parent.type === Object.keys(LIST_TYPE)[0]) {
+                    editor
+                    .unwrapBlock(Object.keys(LIST_TYPE)[0])
                 }
             }
         }

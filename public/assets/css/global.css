@@ -112,3 +112,8 @@ input:focus {
 .file-thumbnail-image {
     width: 60px;
 }
+.file-thumbnail-delete {
+    position: relative;
+    top: 0px;
+    right: 0px;
+}
