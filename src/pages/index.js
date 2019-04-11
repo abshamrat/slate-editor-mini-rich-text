@@ -1,4 +1,4 @@
-import { Value } from 'slate';
+import { Value, Point, Range } from 'slate';
 import { Editor } from 'slate-react';
 import React from 'react';
 import { Modal, notification} from 'antd';
@@ -318,7 +318,8 @@ class Index extends React.Component {
    * @param {Event} event
    */
   handleFileDownload = (event) => {
-    event.preventDefault();
+    // event.preventDefault();
+    event.stopPropagation();
     const dataUrl = event.target.getAttribute('data-url');
     const dataName = event.target.getAttribute('data-name');
     confirm({
@@ -328,6 +329,29 @@ class Index extends React.Component {
       cancelText: 'No',
       onOk() {
         download(dataUrl, dataName);
+      },
+      onCancel() {
+        console.log('Cancel');
+      },
+    });
+  }
+  /**
+   * A change function to handle the file deletion.
+   *
+   * @param {Event} event
+   */
+  handleFileDelete = (event) => {
+    event.preventDefault();
+    const context = this;
+    const {document} = this.state.value;
+    const node = document.getNode(event.target.getAttribute('data-file-key'));
+    confirm({
+      title: 'Do you want to delete this file?',
+      okText: 'Yes',
+      okType: 'danger',
+      cancelText: 'No',
+      onOk() {
+        context.editor.moveToRangeOfNode(node).delete()
       },
       onCancel() {
         console.log('Cancel');
@@ -382,7 +406,12 @@ class Index extends React.Component {
         const url = node.data.get('url');
         const name = node.data.get('name');
         const isPdf = node.data.get('ext') === 'pdf';
-        return  <FileThumbnail url={url} name={name} isPdf={isPdf} onFileClick={this.handleFileDownload} selected={isFocused} {...attributes}> {children}</FileThumbnail>
+        return  <FileThumbnail url={url} 
+          name={name} isPdf={isPdf} 
+          onDeleteClick={this.handleFileDelete} 
+          onFileClick={this.handleFileDownload} 
+          selected={isFocused} 
+          attributes={attributes}> {children}</FileThumbnail>
       case 'image': 
         const src = node.data.get('src')
         return <Image src={src} selected={isFocused} {...attributes} />
@@ -413,7 +442,16 @@ class Index extends React.Component {
       const type = getCurrentBlockType(this.state);
       if (type === 'file') {
         editor.insertBlock(DEFAULT_NODE);
-      } else {
+      } else if(type === 'ol_list' || type === 'ul_list') {
+        const {blocks} = this.state.value;
+        const listText = blocks.first().getText().trim();
+        if (listText) {
+          return next();
+        } else {
+          editor.shiftLeft(this.state.value);
+        }
+      }
+      else {
         return next()
       }
     } else {
