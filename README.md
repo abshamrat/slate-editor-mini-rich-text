@@ -1,4 +1,4 @@
-# slate-editor-mini-project
+# slate-editor-mini-rich-text
 A slate editor with minimal feature
 
 ## Quick Start
